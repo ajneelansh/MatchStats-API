@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.get('/leaugeoflegneds/:username',PlayerStats)
-router.get('/leagueoflegends/recentmatches/:username', RecentMatches)
+router.get('/fortnite/:username',PlayerStats)
+router.get('/fortnite/recentmatches/:username', RecentMatches)
 
 export default router;
