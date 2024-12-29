@@ -1,5 +1,6 @@
 import {Request,Response} from 'express'
 import {riotClient} from '../helpers/RiotClient'
+import { AxiosError } from 'axios'
 
 
 const getpuuid = async (name:string , tagline: string): Promise<string> => {
@@ -45,9 +46,13 @@ const FilterMatchId = async (
 
 
     } 
-    catch (error) {
-        throw new Error(`No match found: ${error.response?.data?.message || error.message}`);
+    catch (err: unknown) {
+      if (err instanceof AxiosError) {
+        throw new Error(`No match found: ${err.message}`);
+      } else {
+        throw new Error('An unknown error occurred');
       }
+}
 }
 
 
@@ -72,11 +77,11 @@ try{
   });
 }
 
-catch (error) {
-    res.status(500).json({
-      error: error.response?.data?.message || error.message,
-    });
-
-   
-}
+catch (err: unknown) {
+  if (err instanceof AxiosError) {
+    throw new Error(`No match found: ${err.message}`);
+  } else {
+    throw new Error('An unknown error occurred');
+  }
+ }
 }

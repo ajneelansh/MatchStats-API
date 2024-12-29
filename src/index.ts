@@ -1,13 +1,17 @@
-import express from 'express'
-import epicgamesRoutes from '../Routes/epicgamesRoutes.ts'
-import RiotGamesRoutes from '../Routes/RiotGamesRoutes.ts'
-import steamworksRoutes from '../Routes/steamworksRoutes.ts'
+import express from 'express';
+import epicgamesRoutes from '../Routes/epicgamesRoutes';
+import RiotGamesRoutes from '../Routes/RiotGamesRoutes';
+import steamworksRoutes from '../Routes/steamworksRoutes';
 
-const app = express()
+const app = express();
 
 app.use(express.json());
 
 app.use('/epicgames', epicgamesRoutes)
 app.use('/Riotgames', RiotGamesRoutes)
 app.use('/steamworks',steamworksRoutes)
+
+app.listen(3000, () => {
+    console.log(`Server is running on http://localhost:3000`);
+  });
 
