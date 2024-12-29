@@ -1,8 +1,8 @@
 import { Router } from 'express';
+import { fortniteFetchMatchStat } from '../Controllers/riotGamesController';
 
 const router = Router();
 
-router.get('/fortnite/:username',PlayerStats)
-router.get('/fortnite/recentmatches/:username', RecentMatches)
+router.get('/fortnite/matchstat',fortniteFetchMatchStat)
 
 export default router;
