@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/epicgames', epicgamesRoutes)
-app.use('/Riotgames', RiotGamesRoutes)
+app.use('/riotgames', RiotGamesRoutes)
 app.use('/steamworks',steamworksRoutes)
 
 app.listen(3000, () => {

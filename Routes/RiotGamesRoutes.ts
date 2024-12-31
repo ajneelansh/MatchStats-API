@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import { LolFetchMatchStat } from '../Controllers/EpicGamesController'
+import { LolFetchMatchStat } from '../Controllers/riotGamesController'
 
 const router = Router()
 
