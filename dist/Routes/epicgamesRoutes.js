@@ -1,5 +1,8 @@
 import { Router } from 'express';
-import { fortniteFetchMatchStat } from '../Controllers/riotGamesController.js';
+import { fortniteFetchMatchStat } from '../Controllers/EpicGamesController.js';
+
 const router = Router();
-router.get('/fortnite/matchstat', fortniteFetchMatchStat);
+
+router.get('/matchstat/fortnite', fortniteFetchMatchStat);
+
 export default router;

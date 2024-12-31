@@ -3,6 +3,6 @@ import { LolFetchMatchStat } from '../Controllers/riotGamesController'
 
 const router = Router()
 
-router.get('/leagueoflegends/matchstat',LolFetchMatchStat)
+router.get('/matchstat/leagueoflegends',LolFetchMatchStat)
 
 export default router

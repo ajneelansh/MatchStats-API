@@ -91,3 +91,5 @@ export const fortniteFetchMatchStat = async(req:Request, res:Response): Promise<
     } 
    }
 }
+
+export default fortniteFetchMatchStat;
