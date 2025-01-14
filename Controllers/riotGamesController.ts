@@ -1,88 +1,104 @@
 import {Request,Response} from 'express'
-import {riotClient} from '../helpers/RiotClient'
+import  axios  from 'axios';
 import { AxiosError } from 'axios'
+import dotenv from 'dotenv'
 
+dotenv.config()
+const api_key = process.env.RIOT_API_KEY;
 
-const getpuuid = async (name:string , tagline: string): Promise<string> => {
- const url = `https://aisa.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${name}/${tagline}`;
- const response = await riotClient.get(url);
- return response.data.puuid;
+export const getpuuid = async (region:string ,name:string , tagline: string): Promise<string> => {
+  try{
+    const url = `https://${region}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${name}/${tagline}?api_key=${api_key}`;
+    const response = await axios.get(url);
+    return response.data.puuid;
+  }
+  catch (err: unknown) {
+    if (err instanceof AxiosError) {
+     throw new Error(`Failed to fetch PUUID: ${err.response?.data?.message || err.message}`);
+     }
+     throw new Error('An unknown error occurred while fetching PUUID');
+}
 };
 
-const getMatchIds = async (puuid : string) : Promise<string[]> => {
- const url =`https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids`;
- const response = await riotClient.get(url,{params:{ count:5 }});
+export const getMatchIds = async (region:string ,puuid : string, count:Number) : Promise<string[]> => {
+ const url =`https://${region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=${count}&api_key=${api_key}`;
+ const response = await axios.get(url);
  return response.data;
 };
 
-const getMatchDetails = async (matchId: string): Promise<any> =>{
-    const url = `https://asia.api.riotgames.com/lol/match/v5/matches/${matchId}`;
-    const response = await riotClient.get(url)
+export const getMatchDetails = async (region:string, matchId: string): Promise<any> =>{
+    const url = `https://${region}.api.riotgames.com/lol/match/v5/matches/${matchId}?api_key=${api_key}`;
+    const response = await axios.get(url);
     return response.data;
 };
 
 const FilterMatchId = async (
+    region:string,
     puuid: string,
+    startTimestamp: number,
+    endTimestamp:number,
     requiredPlayerspuuids: string[],
-    requiredPlayersCount: number
 ): Promise<any> => {
 
     try{
-        const matchIds = await getMatchIds(puuid);
+        const matchIds = await getMatchIds(region,puuid,20);
 
     for(const matchId of matchIds){
-        const matchDetails = await getMatchDetails(matchId);
-        const participants = matchDetails.info.participants;
+        const matchDetails = await getMatchDetails(region,matchId);
+        const participants = matchDetails.metadata.participants;
 
         const playersIdentified = requiredPlayerspuuids.every((playerpuuid: any) => 
-        participants.some((participant:any)=> participant.puuid === playerpuuid)
+        participants.some((participant:any)=> participant === playerpuuid)
        );
 
-       if(participants.length === requiredPlayersCount && playersIdentified) 
-
-       return matchId;
+       if(matchDetails.info.gameStartTimestamp >= startTimestamp && matchDetails.info.gameEndTimestamp <= endTimestamp && playersIdentified) {
+        return matchId;
+       }
 
       }
-
-
     } 
     catch (err: unknown) {
       if (err instanceof AxiosError) {
-        throw new Error(`No match found: ${err.message}`);
+        throw new Error(`No match found as per criteria: ${err.message}`);
       } else {
         throw new Error('An unknown error occurred');
-      }
+      } 
 }
 }
 
 export const LolFetchMatchStat = async(req:Request , res:Response): Promise<any> => {
 
-try{
-   const {tagLine, gameName} = req.body;
+  try {
+    const { region,matchRegion, tagLine, gameName, creationTime, validationTime, requiredPlayerspuuids} = req.body;
 
-   if (!gameName || !tagLine) {
-    return res.status(400).json({ error: 'Name and tagline are required' });
+    if (!matchRegion||!region || !gameName || !tagLine) {
+      console.log('Missing required fields');
+      return res.status(400).json({ error: 'Region, Name, and tagline are required' });
+    }
+
+    
+    const puuid = await getpuuid(region,gameName, tagLine);
+    const matchIds = await getMatchIds(matchRegion, puuid, 20);
+    const FinalMatchId = await FilterMatchId(matchRegion, puuid, creationTime, validationTime, requiredPlayerspuuids);
+    const FinalMatchDetails = await getMatchDetails(matchRegion, FinalMatchId);
+
+    res.status(200).json({
+      message: 'Match timeline fetched successfully',
+      FinalMatchDetails: FinalMatchDetails
+    });
+  } catch (err: unknown) {
+    console.error('Error occurred:', err);
+
+    if (err instanceof AxiosError) {
+      console.error('Axios error details:', err.response?.data);
+      return res.status(500).json({ error: `Riot API Error: ${err.message}` });
+    } else {
+      return res.status(500).json({ error: 'An unknown error occurred' });
+    }
   }
-   const puuid = await getpuuid(gameName,tagLine);
-   const matchIds= await getMatchIds(puuid);
-
-   const FinalMatchId = await FilterMatchId(puuid,matchIds,2);
-   const FinalMatchDetails = await getMatchDetails(FinalMatchId);
-
-   res.status(200).json({
-    message: 'Match timeline fetched successfully',
-    FinalMatchDetails: FinalMatchDetails,
-  });
 }
 
-catch (err: unknown) {
-  if (err instanceof AxiosError) {
-    throw new Error(`No match found: ${err.message}`);
-  } else {
-    throw new Error('An unknown error occurred');
-  }
- }
-}
+
 
 
 

@@ -1,9 +1,7 @@
 import {Request, Response} from 'express'
 import axios from 'axios'
 import { AxiosError } from 'axios';
-import getAccessToken from '../helpers/EpicClient'
 
-const access_token = getAccessToken();
 
 const getAccountId = async (username:string):Promise<string>=> {
   const response = await axios.get('https://api.epicgames.dev/users/public/names?displayName=${username}',{

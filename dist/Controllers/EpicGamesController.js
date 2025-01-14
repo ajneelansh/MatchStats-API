@@ -9,8 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import axios from 'axios';
 import { AxiosError } from 'axios';
-import getAccessToken from '../helpers/EpicClient.js';
-const access_token = getAccessToken();
 const getAccountId = (username) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const response = yield axios.get('https://api.epicgames.dev/users/public/names?displayName=${username}', {
