@@ -1,7 +1,7 @@
 import express from 'express';
-import epicgamesRoutes from '../Routes/epicgamesRoutes';
+import epicgamesRoutes from '../Routes/EpicGamesRoutes';
 import RiotGamesRoutes from '../Routes/RiotGamesRoutes';
-import chessdotcomRoutes from '../Routes/chessdotcomRoutes';
+import chessdotcomRoutes from '../Routes/ChessdotcomRoutes';
 
 const app = express();
 

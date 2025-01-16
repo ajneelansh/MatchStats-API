@@ -1,5 +1,5 @@
 import { Router } from "express";
-import  chessdotcomFetchMatchStat  from "../Controllers/chessdotcomController"; 
+import  chessdotcomFetchMatchStat  from "../Controllers/ChessdotcomController"; 
 
 const router = Router();   
 

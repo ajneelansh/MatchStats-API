@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const filterMatches = async (username:string, opponent:string, year:number, month:string, timestamp:Date) => {
 
-    const url = `https://api.chess.com/pub/player/${username}/games/${year}/${month}`;
+  const url = `https://api.chess.com/pub/player/${username}/games/${year}/${month}`;
   try {
     const response = await axios.get(url);
     const games = response.data.games || [];
@@ -19,8 +19,9 @@ const filterMatches = async (username:string, opponent:string, year:number, mont
       const isTimestampClose = Math.abs(matchTime.getTime() - givenTime.getTime()) <= 2 * 60 * 1000;
 
       return isOpponent && isTimestampClose;
-    });
-  } catch (err) {
+          });
+      }
+   catch (err) {
     if (err instanceof Error) {
       console.error(`Error fetching games for ${username}:`, err.message);
     } else {
