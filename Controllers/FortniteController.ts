@@ -57,10 +57,10 @@ const filterMatches = async (
 
 export const fortniteFetchMatchStat = async(req:Request, res:Response): Promise<any> => {
   try{    
-   const username = req.query.username as string;
-   const matchType = req.query.matchType as string;
-   const accountIds = (req.query.accountIds as string)?.split(',');
-   const criteria = { matchType, accountIds };
+  const username = req.body.username as string;
+  const matchType = req.body.matchType as string;
+  const accountIds = (req.body.accountIds as string)?.split(',');
+  const criteria = { matchType, accountIds };
 
    if(!username) {
     return res.status(400).json({message:"username is required"})

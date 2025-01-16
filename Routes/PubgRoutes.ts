@@ -4,6 +4,6 @@ import exp from 'constants'
 
 const router = Router()
 
-router.get('/matchstat/pubg',PubgFetchMatchStat)
+router.get('/matchstat',PubgFetchMatchStat)
 
 export default router

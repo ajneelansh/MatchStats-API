@@ -3,6 +3,6 @@ import  chessdotcomFetchMatchStat  from "../Controllers/ChessdotcomController";
 
 const router = Router();   
 
-router.get('/matchstat/chessdotcom',chessdotcomFetchMatchStat)
+router.get('/matchstat',chessdotcomFetchMatchStat)
 
 export default router;

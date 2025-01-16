@@ -66,11 +66,7 @@ const filterMatch = async (
 
 export const PubgFetchMatchStat = async(req:Request, res:Response): Promise<any> => {
 try {
-    const username = req.query.username as string;
-    const map = req.query.map as string;
-    const playerIds = (req.query.playerIds as string).split(',');
-    const startTime = req.query.startTime as string;
-    const endTime = req.query.endTime as string;
+    const { username, map, playerIds, startTime, endTime } = req.body;
 
     const accountId = await getAccountId(username);
     const matchIds = await getRecentMatchIds(accountId);
@@ -81,7 +77,10 @@ try {
         return res.status(404).send({ error: 'Match not found!' });
     }
 
-    return res.send(match);
+    res.status(200).json({
+        message: 'Match details fetched successfully',
+        matchDetails: matchDetails,
+      });
 } catch (err: unknown) {
     if (err instanceof AxiosError) {
       return res.status(500).send({error: `Failed to fetch Match Details: ${err.message}`});
