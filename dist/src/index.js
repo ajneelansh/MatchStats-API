@@ -1,8 +1,8 @@
 import express from 'express';
-import epicgamesRoutes from '../Routes/epicgamesRoutes';
-import RiotGamesRoutes from '../Routes/RiotGamesRoutes';
-import chessdotcomRoutes from '../Routes/ChessdotcomRoutes';
-import PubgRoutes from '../Routes/PubgRoutes';
+import epicgamesRoutes from '../Routes/epicgamesRoutes.js';
+import RiotGamesRoutes from '../Routes/RiotGamesRoutes.js';
+import chessdotcomRoutes from '../Routes/ChessdotcomRoutes.js';
+import PubgRoutes from '../Routes/PubgRoutes.js';
 const app = express();
 app.use(express.json());
 app.use('/epicgames', epicgamesRoutes);

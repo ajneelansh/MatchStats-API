@@ -9,6 +9,17 @@ details of the correct match which have required participants and started betwee
 - [Chess.com](#Chess.com)
 - [Fortnite](#fortnite)
 
+### Initialization
+
+To initialize the project, run the following command:
+```bash
+npm init
+```
+Then, run the following command to start the server:
+```bash
+npm start
+```
+
 ## Chess.com
 
 ### Get Match which suits the criteria given
