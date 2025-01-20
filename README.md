@@ -11,6 +11,14 @@ details of the correct match which have required participants and started betwee
 
 ### Initialization
 
+### .env
+
+```js
+RIOT_API_KEY = ''
+TRN-Api-Key = ''
+PUBG_API_KEY = ''
+```
+
 To initialize the project, run the following command:
 ```bash
 npm init
