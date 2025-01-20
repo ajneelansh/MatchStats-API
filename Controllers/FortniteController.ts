@@ -13,7 +13,7 @@ const getAccountId = async (username:string):Promise<string>=> {
 const getRecentMatches = async (accountId:string): Promise<any[]> => {
   try{
     const response = await axios.get('https://api.fortnitetracker.com/v1/profile/account/${accountId}',{
-       headers: {'TRN-Api-Key': process.env.TRN_APIKEY}
+       headers: {'TRN_API_KEY': process.env.TRN_APIKEY}
     });
     
     const matches = response.data.matches;

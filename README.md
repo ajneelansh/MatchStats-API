@@ -15,7 +15,7 @@ details of the correct match which have required participants and started betwee
 
 ```js
 RIOT_API_KEY = ''
-TRN-Api-Key = ''
+TRN_API_KEY = ''
 PUBG_API_KEY = ''
 ```
 

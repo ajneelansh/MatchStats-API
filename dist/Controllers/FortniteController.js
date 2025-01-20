@@ -19,7 +19,7 @@ const getAccountId = (username) => __awaiter(void 0, void 0, void 0, function* (
 const getRecentMatches = (accountId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield axios.get('https://api.fortnitetracker.com/v1/profile/account/${accountId}', {
-            headers: { 'TRN-Api-Key': process.env.TRN_APIKEY }
+            headers: { 'TRN_API_KEY': process.env.TRN_APIKEY }
         });
         const matches = response.data.matches;
         return matches.slice(0, 5);
